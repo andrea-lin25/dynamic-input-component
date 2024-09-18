@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DynamicInput Component
 
-## Getting Started
+## Introduction
 
-First, run the development server:
+The `DynamicInput` component is a flexible and interactive text editor built with React. It allows users to manage editable text blocks and tags (chips) seamlessly. This component supports dynamic editing, adding and deleting tags, and moving the cursor between text blocks. It's styled with Tailwind CSS for a modern look and feel.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Component Design
+
+### Features
+
+- **Dynamic Text and Tags**: Users can insert and remove tags (chips) within editable text blocks.
+- **Cursor Management**: Supports moving the cursor between text blocks using arrow keys.
+- **Content Editing**: Users can edit text blocks directly and see real-time updates.
+- **Tag Management**: Provides functionality to delete tags and merge content appropriately.
+
+### Structure
+
+- **Blocks**: The component maintains a state of `blocks`, which can be either text or tags. Each block has:
+  - `id`: Unique identifier.
+  - `type`: Defines if the block is a text or a tag.
+  - `spanContent`: Content of text blocks.
+  - `spanRef`: Reference to the span element of text blocks.
+  - `chipContent`: Content of tag blocks.
+  - `chipRef`: Reference to the div element of tag blocks.
+
+## Event Handlers
+
+### `handleTagClick`
+
+**Purpose**: Handles the insertion of a new tag at the current cursor position within a text block.
+
+**Details**:
+
+- Checks if there is a current text block focused.
+- Splits the text at the cursor position and inserts the new tag.
+- Adjusts blocks array and updates the state.
+
+### `handleDeleteTag`
+
+**Purpose**: Handles the deletion of a tag and merges adjacent text blocks if necessary.
+
+**Details**:
+
+- Checks if the block at the given index is a tag.
+- Merges content of adjacent text blocks if the tag is removed.
+- Sets the cursor position to the end of the previous text block or the start of the current block.
+
+### `handleBoardClick`
+
+**Purpose**: Focuses the last text block and sets the cursor to the end of its content when the board is clicked.
+
+**Details**:
+
+- Focuses the span element of the last text block.
+- Sets the cursor position to the end of the content.
+
+### `handleKeyDown`
+
+**Purpose**: Handles key press events for navigating between text blocks and deleting tags.
+
+**Details**:
+
+- **ArrowLeft**: Moves the cursor to the end of the previous text block if at the start.
+- **ArrowRight**: Moves the cursor to the start of the next text block if at the end.
+- **Backspace**: Deletes the previous tag if the cursor is at the start of a text block.
+- **Delete**: Deletes the next tag if the cursor is at the end of a text block.
+
+### `handleInput`
+
+**Purpose**: Updates the content of a text block when the user types in it.
+
+**Details**:
+
+- Captures the updated content of the text block and updates the state.
+
+## Usage
+
+```jsx
+import DynamicInput from "./components/DynamicInput";
+
+function App() {
+  return (
+    <div className="App">
+      <DynamicInput suggestedTags={["One", "Two", "Three", "Four", "Five"]} />
+    </div>
+  );
+}
+
+export default App;
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
